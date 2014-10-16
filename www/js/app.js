@@ -32,13 +32,25 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
 
   .controller('GeoNotesController', function($scope, $ionicPlatform, $ionicModal, $cordovaGeolocation, NoteService) {
 
-    $ionicPlatform.ready(function() {
+    $scope.safeApply = function(fn) {
+      var phase = this.$root.$$phase;
+      if(phase == '$apply' || phase == '$digest') {
+        if(fn && (typeof(fn) === 'function')) {
+          fn();
+        }
+      } else {
+        this.$apply(fn);
+      }
+    };
 
+    // track user location
+    $ionicPlatform.ready(function() {
       $cordovaGeolocation
         .watchPosition(options)
         .promise.then(function() { /*done*/ }, function() { /*error*/ }, userLocation.emit.bind(userLocation))
     })
 
+    // this is where we store our notes
     $scope.notes = [];
 
     var currentUserLocation
@@ -52,22 +64,37 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       currentArea.updateCriteria({ center: ll })
     })
 
-    currentArea.on('key_entered', function(k, l, d) {
-      NoteService.fbNotes.child(k).once('value', function(snap) {
-        var note = snap.val()
+    function prepareSnapshotForList(snap) {
+
+      var note = snap.val()
+      if (note) {
+
         note.name = snap.name()
+
+        var existing = _.find($scope.notes, { name: note.name })
+        if (existing) _.extend(existing, note)
+        else $scope.notes.push(note)
+
         note.metersAway = GeoFire.distance(note.location, currentUserLocation) * 1000
-        $scope.notes.push(note)
-        $scope.$apply()
-      })
+      } else {
+        $scope.notes = $scope.notes.filter(function(note) { return note.name !== snap.name() })
+      }
+
+      $scope.safeApply()
+    }
+
+    currentArea.on('key_entered', function(k, l, d) {
+      NoteService.fbNotes.child(k).on('value', prepareSnapshotForList)
     })
 
     currentArea.on('key_exited', function(k) {
-      NoteService.fbNotes.child(k).once('value', function(snap) {
-        $scope.notes = $scope.notes.filter(function(note) {
-          return note.text !== snap.val().text
-        })
+
+      // remove from local notes
+      $scope.notes = $scope.notes.filter(function(note) {
+        return note.name !== k
       })
+
+      NoteService.fbNotes.child(k).off('value')
     })
 
     var options = {
