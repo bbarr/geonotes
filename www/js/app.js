@@ -22,6 +22,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       },
 
       fetch: function() {
+
       },
 
       create: function(raw) {
@@ -29,21 +30,10 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     }
   })
 
-  .run(function($ionicPlatform) {
-
-    $ionicPlatform.ready(function() {
-      if(window.cordova && window.cordova.plugins.Keyboard) {
-        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      }
-      if(window.StatusBar) {
-        StatusBar.styleDefault();
-      }
-    });
-  })
-
   .controller('GeoNotesController', function($scope, $ionicPlatform, $ionicModal, $cordovaGeolocation, NoteService) {
 
     $ionicPlatform.ready(function() {
+
       $cordovaGeolocation
         .watchPosition(options)
         .promise.then(function() { /*done*/ }, function() { /*error*/ }, userLocation.emit.bind(userLocation))
