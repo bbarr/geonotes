@@ -46,7 +46,11 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     // track user location
     $ionicPlatform.ready(function() {
       $cordovaGeolocation
-        .watchPosition(options)
+        .watchPosition({
+          frequency : 1000,
+          timeout : 5000,
+          enableHighAccuracy: true
+        })
         .promise.then(function() { /*done*/ }, function() { /*error*/ }, userLocation.emit.bind(userLocation))
     })
 
@@ -60,8 +64,12 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
 
     var userLocation = Kefir.emitter()
     userLocation.map(llArray).onValue(function(ll) {
+      $scope.notes.forEach(function(note) {
+        note.metersAway = Math.round(GeoFire.distance(note.location, currentUserLocation) * 1000)
+      })
       currentUserLocation = ll
       currentArea.updateCriteria({ center: ll })
+      $scope.safeApply()
     })
 
     function prepareSnapshotForList(snap) {
@@ -75,7 +83,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
         if (existing) _.extend(existing, note)
         else $scope.notes.push(note)
 
-        note.metersAway = GeoFire.distance(note.location, currentUserLocation) * 1000
+        note.metersAway = Math.round(GeoFire.distance(note.location, currentUserLocation) * 1000)
       } else {
         $scope.notes = $scope.notes.filter(function(note) { return note.name !== snap.name() })
       }
@@ -96,12 +104,6 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
 
       NoteService.fbNotes.child(k).off('value')
     })
-
-    var options = {
-      frequency : 1000,
-      timeout : 5000,
-      enableHighAccuracy: true
-    };
 
     // Create and load the Modal
     $ionicModal.fromTemplateUrl('new-note.html', function(modal) {
