@@ -7820,8 +7820,10 @@ $ios-transition-box-shadow-end: -200px 0px 200px rgba(0,0,0,0.15), -5px 0px 5px 
 
 .note-text {
   font-weight: 700;
-  text-align: center;
   padding: 10px 0; }
+
+.note-likes {
+  text-align: right; }
 
 .score {
   float: right;

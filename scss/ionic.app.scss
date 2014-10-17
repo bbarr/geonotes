@@ -25,9 +25,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   font-size: 24px;
 }
 
+.item:nth-child(even) {
+  //background: #f5f5f5;
+}
+
 .note-text {
   font-weight: 700;
-  text-align: center;
+  //text-align: center;
   padding: 10px 0;
 }
 

@@ -31,7 +31,7 @@
 
     <ion-pane>
 
-      <ion-header-bar class="bar-stable">
+      <ion-header-bar class="bar-positive">
         <h1 class="title"><i class="icon ion-help-buoy"></i> Buoy</h1>
         <!-- New Note button-->
         <button class="button button-icon" ng-click="newNote()">
@@ -40,15 +40,17 @@
       </ion-header-bar>
 
       <ion-content>
-        <ion-list>
-          <ion-item ng-repeat="note in notes" ng-dblclick="upvote(note)">
-            <div class="note-text">{{note.text}}</div>
+        <ion-list class="notes">
+          <ion-item class="card" ng-repeat="note in notes" ng-dblclick="upvote(note)">
+            <div class="row">
+              <div class="note-text">{{note.text}}</div>
+            </div>
             <div class="row">
               <div class="col">
                 <p><i class="icon ion-location"></i> {{note.metersAway}} meters away</p>
               </div>
               <div class="col text-right">
-                <p><i class="icon ion-heart"></i> {{note.score}}</p>
+                <p><i class="icon ion-heart" ng-click="upvote(note)"></i> {{note.score}}</p>
               </div>
             </div>
           </ion-item>
@@ -62,7 +64,7 @@
 
         <!-- Modal header bar -->
         <ion-header-bar class="bar-secondary">
-          <button class="button button-clear button-positive" ng-click="closeNewNote()">Cancel</button>
+          <button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="closeNewNote()"> Cancel</button>
           <h1 class="title">New Note</h1>
         </ion-header-bar>
 
