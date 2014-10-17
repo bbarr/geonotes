@@ -7815,6 +7815,14 @@ $ios-transition-box-shadow-end: -200px 0px 200px rgba(0,0,0,0.15), -5px 0px 5px 
   -webkit-transition: none !important;
   transition: none !important; }
 
+.bar .title {
+  font-size: 24px; }
+
+.note-text {
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 0; }
+
 .score {
   float: right;
   border-left: 1px solid #ccc;

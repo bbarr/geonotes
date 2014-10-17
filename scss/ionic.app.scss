@@ -21,6 +21,20 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+.bar .title {
+  font-size: 24px;
+}
+
+.note-text {
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.note-likes {
+  text-align: right;
+}
+
 .score {
   float: right;
   border-left: 1px solid #ccc;
