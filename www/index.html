@@ -43,21 +43,23 @@
         <ion-list class="notes" can-swipe="canSwipe" show-delete="showDelete">
           <ion-item ng-repeat="note in notes" on-tap="upvote(note, true)">
             <div class="row">
+              <div class="col">
+                <p><i class="icon ion-location"></i> {{note.distanceAway}} miles</p>
+              </div>
+              <div class="col text-right">
+                <p class="note-type">{{note.type}}</p>
+              </div>
+            </div>
+            <div class="row">
               <div class="note-text">{{note.text}}</div>
             </div>
             <div class="row">
               <div class="col">
-                <p><i class="icon ion-location"></i> {{note.distanceAway}} miles</p>
-              </div>
-              <div class="col">
-                <p class="note-type">{{note.type}}</p>
+                <button class="button button-outline button-assertive icon ion-close" on-tap="downvote(note)"></button>
               </div>
               <div class="col text-right">
-                <p><i class="icon ion-heart"></i> {{note.hearts}}</p>
+                <button class="button button-outline button-balanced icon ion-heart" on-tap="upvote(note)"> {{note.hearts}}</button>
               </div>
-              <ion-option-button class="button-info boo" on-tap="downvote(note)">
-              <p>Boo.</p>
-              </ion-option-button>
             </div>
           </ion-item>
         </ion-list>
