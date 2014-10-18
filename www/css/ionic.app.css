@@ -7832,3 +7832,25 @@ $ios-transition-box-shadow-end: -200px 0px 200px rgba(0,0,0,0.15), -5px 0px 5px 
 
 .item {
   white-space: initial; }
+
+.button.active {
+  background: #4a87ee;
+  color: #fff; }
+
+.item h3 {
+  font-size: 20px;
+  margin: 0 0 14px 0;
+  text-align: center;
+  color: #666; }
+
+textarea {
+  font-size: 20px; }
+
+.list .item-content {
+  white-space: initial; }
+
+.boo {
+  background: #ef4e3a; }
+  .boo p {
+    margin-top: 30px;
+    color: #fff; }

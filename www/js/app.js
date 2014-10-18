@@ -1,6 +1,21 @@
 
 var UUID = '' 
 
+var FEET_IN_METER = 3.28084
+var FEET_IN_MILE = 5280
+
+function metersToFeet(m) {
+  return m * FEET_IN_METER
+}
+
+function metersToMiles(m) {
+  return Math.round((metersToFeet(m) / FEET_IN_MILE) * 100) / 100
+}
+
+function kmToMiles(km) {
+  return metersToMiles(km * 1000)
+}
+
 angular.module('geo-notes', ['ionic', 'ngCordova'])
 
   .factory('NoteService', function() {
@@ -37,8 +52,8 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
           snap.ref().child('hearts').update(delta)
 
           // save actual note data
-          note.score += dec
-          notes.child(note.name).update({ score: note.score })
+          note.hearts += dec
+          notes.child(note.name).update({ hearts: note.hearts })
         })
       },
 
@@ -55,8 +70,8 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
           snap.ref().child('hearts').update(delta)
 
           // save actual note data
-          note.score += inc
-          notes.child(note.name).update({ score: note.score })
+          note.hearts += inc
+          notes.child(note.name).update({ hearts: note.hearts })
         })
       },
 
@@ -105,7 +120,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     var userLocation = Kefir.emitter()
     userLocation.map(llArray).onValue(function(ll) {
       $scope.notes.forEach(function(note) {
-        note.metersAway = Math.round(GeoFire.distance(note.location, currentUserLocation) * 1000)
+        note.distanceAway = kmToMiles(GeoFire.distance(note.location, currentUserLocation))
       })
       currentUserLocation = ll
       currentArea.updateCriteria({ center: ll })
@@ -123,7 +138,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
         if (existing) _.extend(existing, note)
         else $scope.notes.push(note)
 
-        note.metersAway = Math.round(GeoFire.distance(note.location, currentUserLocation) * 1000)
+        note.distanceAway = kmToMiles(GeoFire.distance(note.location, currentUserLocation))
       } else {
         $scope.notes = $scope.notes.filter(function(note) { return note.name !== snap.name() })
       }
@@ -155,12 +170,18 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
 
     $scope.canSwipe = true;
 
+    $scope.selectType = function(note, type) {
+      note.type = type
+    }
+
     // Called when the form is submitted
     $scope.createNote = function(raw) {
       var note = {
         text: raw.text,
+        type: raw.type,
         location: currentUserLocation,
-        score: 10
+        life: 14400, // one week in minutes
+        hearts: 0
       }
       $scope.noteModal.hide();
       raw.text = "";
@@ -199,6 +220,10 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
 
     // Open our new note modal
     $scope.newNote = function() {
+      $scope.newNote = {
+        type: 'note',
+        text: ''
+      }
       $scope.noteModal.show();
     };
 

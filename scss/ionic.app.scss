@@ -48,3 +48,31 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .item {
   white-space: initial;
 }
+
+.button.active {
+  background: $positive;
+  color: $light;
+}
+
+.item h3 {
+  font-size: 20px;
+  margin: 0 0 14px 0;
+  text-align: center;
+  color: #666;
+}
+
+textarea {
+  font-size: 20px;
+}
+
+.list .item-content {
+  white-space: initial;
+}
+
+.boo {
+  background: $assertive;
+  p {
+    margin-top: 30px;
+    color: $light;
+  }
+}

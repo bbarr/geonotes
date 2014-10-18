@@ -34,26 +34,29 @@
       <ion-header-bar class="bar-positive">
         <h1 class="title"><i class="icon ion-help-buoy"></i> Buoy</h1>
         <!-- New Note button-->
-        <button class="button button-icon" ng-click="newNote()">
+        <button class="button button-icon" on-tap="newNote()">
           <i class="icon ion-compose"></i>
         </button>
       </ion-header-bar>
 
       <ion-content>
-        <ion-list class="list notes" can-swipe="canSwipe" show-delete="showDelete">
-          <ion-item class="item card" ng-repeat="note in notes" on-tap="upvote(note, true)">
+        <ion-list class="notes" can-swipe="canSwipe" show-delete="showDelete">
+          <ion-item ng-repeat="note in notes" on-tap="upvote(note, true)">
             <div class="row">
               <div class="note-text">{{note.text}}</div>
             </div>
             <div class="row">
               <div class="col">
-                <p><i class="icon ion-location"></i> {{note.metersAway}} meters away</p>
+                <p><i class="icon ion-location"></i> {{note.distanceAway}} miles</p>
+              </div>
+              <div class="col">
+                <p class="note-type">{{note.type}}</p>
               </div>
               <div class="col text-right">
-                <p><i class="icon ion-heart"></i> {{note.score}}</p>
+                <p><i class="icon ion-heart"></i> {{note.hearts}}</p>
               </div>
-              <ion-option-button class="button-info" on-tap="downvote(note)">
-                Boo.
+              <ion-option-button class="button-info boo" on-tap="downvote(note)">
+              <p>Boo.</p>
               </ion-option-button>
             </div>
           </ion-item>
@@ -67,18 +70,29 @@
 
         <!-- Modal header bar -->
         <ion-header-bar class="bar-secondary">
-          <button class="button icon-left ion-chevron-left button-clear button-dark" ng-click="closeNewNote()"> Cancel</button>
+          <button class="button icon-left ion-chevron-left button-clear button-dark" on-tap="closeNewNote()"> Cancel</button>
           <h1 class="title">New Note</h1>
         </ion-header-bar>
 
         <!-- Modal content area -->
         <ion-content>
 
-          <form ng-submit="createNote(note)">
+          <form ng-submit="createNote(newNote)">
             <div class="list">
-              <label class="item item-input">
-                <textarea rows="10" placeholder="What do you have to say?" ng-model="note.text"></textarea>
-              </label>
+              <div class="item">
+                <h3>What best describes this note?</h3>
+                <div class="button-bar">
+                  <a class="button" on-tap="selectType(newNote, 'note')" ng-class="{ button: true, active: newNote.type == 'note' }">Just a note</a>
+                  <a class="button" on-tap="selectType(newNote, 'tip')" ng-class="{ button: true, active: newNote.type == 'tip' }">A tip</a>
+                  <a class="button" on-tap="selectType(newNote, 'activity')" ng-class="{ button: true, active: newNote.type == 'activity' }">An activity</a>
+                </div>
+              </div>
+              <div class="item">
+                <h3>What do you have to say?</h3>
+                <label class="item-input">
+                  <textarea rows="10" placeholder="Write here..." ng-model="newNote.text"></textarea>
+                </label>
+              </div>
             </div>
             <div class="padding">
               <button type="submit" class="button button-block button-positive">Create Note</button>
