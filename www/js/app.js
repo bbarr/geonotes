@@ -35,7 +35,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       byArea: function() {
         return geo.query({
           center: [ 0, 0 ],
-          radius: 1000
+          radius: 1
         })
       },
 
