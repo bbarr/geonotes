@@ -1,4 +1,6 @@
 
+var UUID = '' 
+
 angular.module('geo-notes', ['ionic', 'ngCordova'])
 
   .factory('NoteService', function() {
@@ -6,6 +8,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     var fb = new Firebase("https://sweltering-fire-1231.firebaseio.com")
     var notes = fb.child('notes')
     var geos = fb.child('geos')
+    var devices = fb.child('devices')
     var geo = new GeoFire(geos)
 
     return {
@@ -21,6 +24,42 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
         })
       },
 
+      downVote: function(note, scope) {
+        devices.child(UUID).once('value', function(snap) {
+          var d = snap.val()
+          if (d && d.hearts && d.hearts[note.name] == -1) return
+
+          var dec = (d && d.hearts && d.hearts[note.name] == 1) ? -2 : -1
+
+          // update device tracking
+          var delta = {}
+          delta[note.name] = -1
+          snap.ref().child('hearts').update(delta)
+
+          // save actual note data
+          note.score += dec
+          notes.child(note.name).update({ score: note.score })
+        })
+      },
+
+      upVote: function(note) {
+        devices.child(UUID).once('value', function(snap) {
+          var d = snap.val()
+          if (d && d.hearts && d.hearts[note.name] == 1) return
+
+          var inc = (d && d.hearts && d.hearts[note.name] == -1) ? 2 : 1
+
+          // update device tracking
+          var delta = {}
+          delta[note.name] = 1
+          snap.ref().child('hearts').update(delta)
+
+          // save actual note data
+          note.score += inc
+          notes.child(note.name).update({ score: note.score })
+        })
+      },
+
       fetch: function() {
 
       },
@@ -30,7 +69,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     }
   })
 
-  .controller('GeoNotesController', function($scope, $ionicPlatform, $ionicModal, $cordovaGeolocation, NoteService) {
+  .controller('GeoNotesController', function($scope, $ionicListDelegate, $ionicGesture, $ionicPlatform, $ionicModal, $cordovaGeolocation, NoteService) {
 
     $scope.safeApply = function(fn) {
       var phase = this.$root.$$phase;
@@ -45,6 +84,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
 
     // track user location
     $ionicPlatform.ready(function() {
+      UUID = ionic.Platform.device().uuid || 'Mobile Browser probably us testing'
       $cordovaGeolocation
         .watchPosition({
           frequency : 1000,
@@ -113,6 +153,8 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       animation: 'slide-in-up'
     });
 
+    $scope.canSwipe = true;
+
     // Called when the form is submitted
     $scope.createNote = function(raw) {
       var note = {
@@ -126,9 +168,33 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       NoteService.fbGeo.set(created.name(), note.location)
     };
 
-    $scope.upvote = function(note) {
-      note.score += 10
-      NoteService.fbNotes.child(note.name).update({ score: note.score })
+    $scope.downvote = function(note) {
+      NoteService.downVote(note, $scope)
+      $ionicListDelegate.closeOptionButtons()
+    }
+
+    function upvote(note) {
+      NoteService.upVote(note)
+    }
+
+    var lastUpvoteClick = null
+    var lastUpvoteTimer = null
+    $scope.upvote = function(note, dbltap) {
+      if (dbltap) {
+        if (!lastUpvoteClick || lastUpvoteClick !== this.$id) {
+          lastUpvoteTimer = setTimeout(function() { 
+            lastUpvoteClick = null 
+            clearTimeout(lastUpvoteTimer)
+          }, 300)
+          return lastUpvoteClick = this.$id
+        } else {
+          lastUpvoteClick = null
+          clearTimeout(lastUpvoteTimer)
+          upvote(note)
+        }
+      } else {
+        upvote(note)
+      }
     }
 
     // Open our new note modal
