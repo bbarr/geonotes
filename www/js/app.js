@@ -39,6 +39,14 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
         })
       },
 
+      voteStatusFor: function(note, cb) {
+        var name = note.name
+        devices.child(UUID).once('value', function(snap) {
+          var d = snap.val()
+          cb(d.hearts[name] || 0)
+        })
+      },
+
       downVote: function(note, scope) {
         devices.child(UUID).once('value', function(snap) {
           var d = snap.val()
@@ -127,18 +135,32 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       $scope.safeApply()
     })
 
+    function updateNoteStatus(note) {
+      NoteService.voteStatusFor(note, function(status) {
+        note.voteStatus = status
+        $scope.safeApply()
+      })
+    }
+
     function prepareSnapshotForList(snap) {
 
       var note = snap.val()
       if (note) {
 
         note.name = snap.name()
+        console.log('snapshotting')
 
         var existing = _.find($scope.notes, { name: note.name })
         if (existing) _.extend(existing, note)
         else $scope.notes.push(note)
 
         note.distanceAway = kmToMiles(GeoFire.distance(note.location, currentUserLocation))
+
+        updateNoteStatus(note)
+
+        $scope.notes = $scope.notes.sort(function(a, b) {
+          return a.distanceAway > b.distanceAway
+        })
       } else {
         $scope.notes = $scope.notes.filter(function(note) { return note.name !== snap.name() })
       }
@@ -190,11 +212,13 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     };
 
     $scope.downvote = function(note) {
+      note.voteStatus = -1
       NoteService.downVote(note, $scope)
       $ionicListDelegate.closeOptionButtons()
     }
 
     function upvote(note) {
+      note.voteStatus = 1
       NoteService.upVote(note)
     }
 
@@ -219,7 +243,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     }
 
     // Open our new note modal
-    $scope.newNote = function() {
+    $scope.showNewNoteForm = function() {
       $scope.newNote = {
         type: 'note',
         text: ''

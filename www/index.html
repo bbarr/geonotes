@@ -34,7 +34,7 @@
       <ion-header-bar class="bar-positive">
         <h1 class="title"><i class="icon ion-help-buoy"></i> Buoy</h1>
         <!-- New Note button-->
-        <button class="button button-icon" on-tap="newNote()">
+        <button class="button button-icon" on-tap="showNewNoteForm()">
           <i class="icon ion-compose"></i>
         </button>
       </ion-header-bar>
@@ -55,13 +55,13 @@
             </div>
             <div class="row">
               <div class="col">
-                <button class="button button-outline button-assertive icon ion-minus" on-tap="downvote(note)"></button>
+                <button ng-class="{ active: note.voteStatus == -1 }" class="button button-outline button-assertive icon ion-minus" on-tap="downvote(note)"></button>
               </div>
               <div class="col text-center">
                 <p class="score">{{note.hearts}}</p>
               </div>
               <div class="col text-right">
-                <button class="button button-outline button-balanced icon ion-plus" on-tap="upvote(note)"></button>
+                <button ng-class="{ active: note.voteStatus == 1 }" class="button button-outline button-balanced icon ion-plus" on-tap="upvote(note)"></button>
               </div>
             </div>
           </ion-item>
