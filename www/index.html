@@ -53,17 +53,17 @@
             <div class="row">
               <div class="note-text">{{note.text}}</div>
             </div>
-            <div class="row">
+            <footer class="row">
               <div class="col">
-                <button ng-class="{ active: note.voteStatus == -1 }" class="button button-outline button-assertive icon ion-minus" on-tap="downvote(note)"></button>
+                <button ng-class="{ on: note.voteStatus == -1 }" class="button button-outline button-downvote icon ion-thumbsdown" on-tap="downvote(note)"></button>
               </div>
               <div class="col text-center">
                 <p class="score">{{note.hearts}}</p>
               </div>
               <div class="col text-right">
-                <button ng-class="{ active: note.voteStatus == 1 }" class="button button-outline button-balanced icon ion-plus" on-tap="upvote(note)"></button>
+                <button ng-class="{ on: note.voteStatus == 1 }" class="button button-outline button-upvote icon ion-thumbsup" on-tap="upvote(note)"></button>
               </div>
-            </div>
+            </footer>
           </ion-item>
         </ion-list>
       </ion-content>
@@ -87,9 +87,9 @@
               <div class="item">
                 <h3>What best describes this note?</h3>
                 <div class="button-bar">
-                  <a class="button" on-tap="selectType(newNote, 'note')" ng-class="{ button: true, active: newNote.type == 'note' }">Just a note</a>
-                  <a class="button" on-tap="selectType(newNote, 'tip')" ng-class="{ button: true, active: newNote.type == 'tip' }">A tip</a>
-                  <a class="button" on-tap="selectType(newNote, 'activity')" ng-class="{ button: true, active: newNote.type == 'activity' }">An activity</a>
+                  <a class="button note-type" on-tap="selectType(newNote, 'note')" ng-class="{ button: true, active: newNote.type == 'note' }"><i class="icon ion-bookmark"></i>   note</a>
+                  <a class="button note-type" on-tap="selectType(newNote, 'tip')" ng-class="{ button: true, active: newNote.type == 'tip' }"><i class="icon ion-lightbulb"></i>  tip</a>
+                  <a class="button note-type" on-tap="selectType(newNote, 'activity')" ng-class="{ button: true, active: newNote.type == 'activity' }"><i class="icon  ion-ios7-americanfootball"></i> activity</a>
                 </div>
               </div>
               <div class="item">
