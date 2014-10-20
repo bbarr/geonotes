@@ -130,6 +130,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       $scope.notes.forEach(function(note) {
         note.distanceAway = kmToMiles(GeoFire.distance(note.location, currentUserLocation))
       })
+      orderNotes()
       currentUserLocation = ll
       currentArea.updateCriteria({ center: ll })
       $scope.safeApply()
@@ -142,13 +143,20 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       })
     }
 
+    function orderNotes() {
+      $scope.notes = $scope.notes.sort(function(a, b) {
+        if (a.distanceAway > b.distanceAway) return 1
+        else if (a.distanceAway == b.distanceAway) return 0
+        else return -1
+      })
+    }
+
     function prepareSnapshotForList(snap) {
 
       var note = snap.val()
       if (note) {
 
         note.name = snap.name()
-        console.log('snapshotting')
 
         var existing = _.find($scope.notes, { name: note.name })
         if (existing) _.extend(existing, note)
@@ -157,10 +165,8 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
         note.distanceAway = kmToMiles(GeoFire.distance(note.location, currentUserLocation))
 
         updateNoteStatus(note)
+        orderNotes()
 
-        $scope.notes = $scope.notes.sort(function(a, b) {
-          return a.distanceAway > b.distanceAway
-        })
       } else {
         $scope.notes = $scope.notes.filter(function(note) { return note.name !== snap.name() })
       }
