@@ -1,5 +1,5 @@
 
-var UUID = '' 
+var UUID = ''
 
 var FEET_IN_METER = 3.28084
 var FEET_IN_MILE = 5280
@@ -203,8 +203,8 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     $scope.upvote = function(note, dbltap) {
       if (dbltap) {
         if (!lastUpvoteClick || lastUpvoteClick !== this.$id) {
-          lastUpvoteTimer = setTimeout(function() { 
-            lastUpvoteClick = null 
+          lastUpvoteTimer = setTimeout(function() {
+            lastUpvoteClick = null
             clearTimeout(lastUpvoteTimer)
           }, 300)
           return lastUpvoteClick = this.$id

@@ -40,8 +40,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .score {
-  float: right;
-  border-left: 1px solid #ccc;
+  font-weight: 700;
   padding: 10px 20px;
 }
 
@@ -61,6 +60,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   color: #666;
 }
 
+.item p {
+  font-size: 16px;
+}
+
 textarea {
   font-size: 20px;
 }
@@ -74,5 +77,26 @@ textarea {
   p {
     margin-top: 30px;
     color: $light;
+  }
+}
+
+.note {
+
+  .note-type {
+    @extend .ion-ios7-pricetag;
+  }
+}
+
+.tip {
+
+  .note-type {
+    @extend .ion-ios7-star;
+  }
+}
+
+.activity {
+
+  .note-type {
+    @extend .ion-ios7-americanfootball;
   }
 }
