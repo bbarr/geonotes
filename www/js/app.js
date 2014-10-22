@@ -92,7 +92,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     }
   })
 
-  .controller('GeoNotesController', function($scope, $ionicListDelegate, $ionicGesture, $ionicPlatform, $ionicModal, $cordovaGeolocation, NoteService) {
+  .controller('GeoNotesController', function($scope, $ionicActionSheet, $ionicListDelegate, $ionicGesture, $ionicPlatform, $ionicModal, $cordovaGeolocation, NoteService) {
 
     $scope.safeApply = function(fn) {
       var phase = this.$root.$$phase;
@@ -255,4 +255,29 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     $scope.closeNewNote = function() {
       $scope.noteModal.hide();
     };
+
+    // Note Options Action Sheet
+    $scope.showActionsheet = function() {
+
+      $ionicActionSheet.show({
+        titleText: 'More Options',
+        buttons: [
+          { text: '<i class="icon ion-share"></i> Share' },
+        ],
+        destructiveText: '<i class="icon ion-flag"></i>  Flag',
+        cancelText: 'Cancel',
+        cancel: function() {
+          console.log('CANCELLED');
+        },
+        buttonClicked: function(index) {
+          console.log('BUTTON CLICKED', index);
+          return true;
+        },
+        destructiveButtonClicked: function() {
+          console.log('DESTRUCT');
+          return true;
+        }
+      })
+    };
+
   })

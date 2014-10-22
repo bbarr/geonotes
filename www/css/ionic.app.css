@@ -5870,30 +5870,30 @@ progress {
         background-color: #43cee6;
         box-shadow: none;
         color: #fff; }
-  .button.button-assertive {
+  .button.button-assertive, .button.button-upvote.on {
     border-color: #cc2311;
     background-color: #ef4e3a;
     color: #fff; }
-    .button.button-assertive:hover {
+    .button.button-assertive:hover, .button.button-upvote.on:hover {
       color: #fff;
       text-decoration: none; }
-    .button.button-assertive.active, .button.button-assertive.activated, .button.button-downvote.on {
+    .button.button-assertive.active, .button.active.button-upvote.on, .button.button-assertive.activated, .button.button-downvote.on, .button.activated.button-upvote.on {
       border-color: #cc2311;
       background-color: #cc2311;
       box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15); }
-    .button.button-assertive.button-clear {
+    .button.button-assertive.button-clear, .button.button-clear.button-upvote.on {
       border-color: transparent;
       background: none;
       box-shadow: none;
       color: #ef4e3a; }
-    .button.button-assertive.button-icon {
+    .button.button-assertive.button-icon, .button.button-icon.button-upvote.on {
       border-color: transparent;
       background: none; }
-    .button.button-assertive.button-outline {
+    .button.button-assertive.button-outline, .button.button-outline.button-upvote.on {
       border-color: #ef4e3a;
       background: transparent;
       color: #ef4e3a; }
-      .button.button-assertive.button-outline.active, .button.button-assertive.button-outline.activated, .button.button-outline.button-downvote.on {
+      .button.button-assertive.button-outline.active, .button.button-outline.active.button-upvote.on, .button.button-assertive.button-outline.activated, .button.button-outline.button-downvote.on, .button.button-outline.activated.button-upvote.on {
         background-color: #ef4e3a;
         box-shadow: none;
         color: #fff; }
@@ -5904,7 +5904,7 @@ progress {
     .button.button-balanced:hover {
       color: #fff;
       text-decoration: none; }
-    .button.button-balanced.active, .button.button-balanced.activated, .button.button-upvote.on {
+    .button.button-balanced.active, .button.button-balanced.activated {
       border-color: #498f24;
       background-color: #498f24;
       box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15); }
@@ -5920,7 +5920,7 @@ progress {
       border-color: #66cc33;
       background: transparent;
       color: #66cc33; }
-      .button.button-balanced.button-outline.active, .button.button-balanced.button-outline.activated, .button.button-outline.button-upvote.on {
+      .button.button-balanced.button-outline.active, .button.button-balanced.button-outline.activated {
         background-color: #66cc33;
         box-shadow: none;
         color: #fff; }
@@ -7844,11 +7844,17 @@ $ios-transition-box-shadow-end: -200px 0px 200px rgba(0,0,0,0.15), -5px 0px 5px 
 textarea {
   font-size: 20px; }
 
+.list {
+  background: #EEEEEE; }
+
 .list .item-content {
   white-space: initial; }
 
 .item footer {
   padding: 0; }
+
+.flagged {
+  opacity: 0.5; }
 
 .note-type {
   word-spacing: 5px; }
@@ -7860,4 +7866,4 @@ textarea {
   color: #ffbf00; }
 
 .activity .note-type {
-  color: #ff7700; }
+  color: #45bd39; }
