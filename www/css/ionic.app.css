@@ -7856,14 +7856,17 @@ textarea {
 .flagged {
   opacity: 0.5; }
 
-.note-type {
-  word-spacing: 5px; }
-
 .note .note-type {
   color: #4a87ee; }
+  .note .note-type:before {
+    padding-right: 2px; }
 
 .tip .note-type {
   color: #ffbf00; }
+  .tip .note-type:before {
+    padding-right: 2px; }
 
 .activity .note-type {
   color: #45bd39; }
+  .activity .note-type:before {
+    padding-right: 2px; }

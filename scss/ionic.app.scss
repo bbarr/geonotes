@@ -87,29 +87,41 @@ textarea {
 .note-type {
   //font-weight: 700;
   //text-transform: uppercase;
-  word-spacing: 5px;
+  //word-spacing: 5px;
 }
 
 .note {
 
   .note-type {
-    @extend .ion-bookmark;
     color: $positive;
+
+    &:before {
+      @extend .ion-bookmark;
+      padding-right: 2px;
+    }
   }
 }
 
 .tip {
 
   .note-type {
-    @extend .ion-lightbulb;
     color: #ffbf00;
+
+    &:before {
+      @extend .ion-lightbulb;
+      padding-right: 2px;
+    }
   }
 }
 
 .activity {
 
   .note-type {
-    @extend .ion-ios7-americanfootball;
     color: #45bd39;
+
+    &:before {
+      @extend .ion-ios7-americanfootball;
+      padding-right: 2px;
+    }
   }
 }

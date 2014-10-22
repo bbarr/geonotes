@@ -41,7 +41,7 @@
 
       <ion-content>
         <ion-list class="notes" can-swipe="listCanSwipe">
-          <ion-item class="card item {{note.type}}" ng-class="{ flagged: note.voteStatus == -1 }" ng-repeat="note in notes" on-tap="upvote(note, true)">
+          <ion-item class="card item {{note.type}}" ng-class="{ flagged: note.voteStatus == -1 }" ng-repeat="note in notes | orderBy:'distanceAway'" on-tap="upvote(note, true)">
             <div class="row">
               <div class="col">
                 <p><i class="icon ion-location"></i> {{note.distanceAway}} miles</p>
