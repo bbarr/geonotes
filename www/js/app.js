@@ -23,6 +23,7 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     var fb = new Firebase("https://sweltering-fire-1231.firebaseio.com")
     var notes = fb.child('notes')
     var geos = fb.child('geos')
+    var comments = fb.child('comments')
     var devices = fb.child('devices')
     var geo = new GeoFire(geos)
 
@@ -31,6 +32,19 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       fbNotes: notes,
       fbGeos: geos,
       fbGeo: geo,
+
+      getComments: function(note, cb) {
+        comments.child(note.name).once('value', function(snap) {
+          cb(snap.val())
+        })
+      },
+
+      createComment: function(note, text) {
+        comments.child(note.name).push({
+          text: text,
+          device: UUID
+        })
+      },
 
       byArea: function() {
         return geo.query({
@@ -105,6 +119,9 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       }
     };
 
+    window.getComments = NoteService.getComments
+    window.createComment = NoteService.createComment
+
     // track user location
     $ionicPlatform.ready(function() {
       UUID = ionic.Platform.device().uuid || 'Mobile Browser probably us testing'
@@ -172,6 +189,19 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       }
 
       $scope.safeApply()
+    }
+
+    $scope.createComment = function(note, text) {
+      // make the comments here.. call it from some form in the UI
+      NoteService.createComment(note, text)
+    }
+
+    $scope.showComments = function(note) {
+      NoteService.getComments(note, function(comments) {
+        // do what you wanna do with the comments here...
+        // for now ill just add to note
+        note.comments = comments
+      })
     }
 
     currentArea.on('key_entered', function(k, l, d) {

@@ -56,8 +56,8 @@
             <footer class="row">
               <div class="col text-right">
                 <button ng-class="{ on: note.voteStatus == 1 }" class="button button-clear button-upvote icon ion-heart" on-tap="upvote(note)"> {{note.hearts}}</button>
-                <button class="button button-clear button-upvote icon ion-chatboxes"></button>
-                <button class="button button-clear button-upvote icon ion-more" on-tap="showActionsheet()"></button>
+                <button on-tap="showComments(note)" class="button button-clear button-upvote icon ion-chatboxes"></button>
+                <button class="button button-clear button-upvote icon ion-more" on-tap="showActionsheet(note)"></button>
               </div>
             </footer>
           </ion-item>
