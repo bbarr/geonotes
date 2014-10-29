@@ -226,6 +226,14 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
       animation: 'slide-in-up'
     });
 
+    // Create and load the Modal
+    $ionicModal.fromTemplateUrl('comment.html', function(modal) {
+      $scope.commentModal = modal;
+    }, {
+      scope: $scope,
+      animation: 'slide-in-right'
+    });
+
     $scope.canSwipe = true;
 
     $scope.selectType = function(note, type) {
@@ -290,6 +298,18 @@ angular.module('geo-notes', ['ionic', 'ngCordova'])
     // Close the new note modal
     $scope.closeNewNote = function() {
       $scope.noteModal.hide();
+    };
+
+    // Open our new comment modal
+    $scope.showNewCommentForm = function() {
+      $scope.newComment = {
+        text: ''
+      }
+      $scope.commentModal.show();
+    };
+
+    $scope.closeNewComment = function() {
+      $scope.commentModal.hide();
     };
 
     // Note Options Action Sheet

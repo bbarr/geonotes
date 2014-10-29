@@ -52,10 +52,12 @@
             </div>
             <div class="row">
               <div class="note-text">{{note.text}}</div>
+              <div class="note-comments">{{comments.text}}</div>
             </div>
             <footer class="row">
               <div class="col text-right">
                 <button ng-class="{ on: note.voteStatus == 1 }" class="button button-clear button-upvote icon ion-heart" on-tap="upvote(note)"> {{note.hearts}}</button>
+                <button on-tap="showNewCommentForm(note)" class="button button-clear button-upvote icon ion-gear-a"></button>
                 <button on-tap="showComments(note)" class="button button-clear button-upvote icon ion-chatboxes"></button>
                 <button class="button button-clear button-upvote icon ion-more" on-tap="showActionsheet(note)"></button>
               </div>
@@ -99,6 +101,38 @@
             </div>
           </form>
 
+        </ion-content>
+
+      </div>
+
+    </script>
+
+    <script id="comment.html" type="text/ng-template">
+
+      <div class="modal">
+
+        <!-- Modal header bar -->
+        <ion-header-bar class="bar-secondary">
+          <button class="button icon-left ion-chevron-left button-clear button-dark" on-tap="closeNewComment()"> Cancel</button>
+          <h1 class="title">New Comment</h1>
+        </ion-header-bar>
+
+        <!-- Modal content area -->
+        <ion-content>
+          <form ng-submit="createComment(newComment)">
+            <div class="list">
+              <div class="item">
+                <h3>Anything to reply?</h3>
+                <label class="item-input">
+                  <textarea rows="10" placeholder="Write here..." ng-model="newComment.text"></textarea>
+                </label>
+              </div>
+            </div>
+            <div class="padding">
+              <button type="submit" class="button button-block button-positive">Create Reply</button>
+            </div>
+          </form>
+          <div class="note-text">{{note.name.text}}</div>
         </ion-content>
 
       </div>
